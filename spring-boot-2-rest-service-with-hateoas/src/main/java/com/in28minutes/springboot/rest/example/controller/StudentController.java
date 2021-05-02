@@ -66,7 +66,6 @@ public class StudentController
 				.buildAndExpand(savedStudent.getId()).toUri();
 
 		return ResponseEntity.created(location).build();
-
 	}
 
 	@PutMapping("/students/{id}")
