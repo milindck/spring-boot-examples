@@ -1,4 +1,4 @@
-package com.in28minutes.springboot.rest.example.student;
+package com.in28minutes.springboot.rest.example.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

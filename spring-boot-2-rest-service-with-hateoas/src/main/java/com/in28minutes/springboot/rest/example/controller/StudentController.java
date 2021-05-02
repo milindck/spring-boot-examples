@@ -1,4 +1,4 @@
-package com.in28minutes.springboot.rest.example.student;
+package com.in28minutes.springboot.rest.example.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -20,9 +20,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-@RestController
-public class StudentResource {
+import com.in28minutes.springboot.rest.example.model.Student;
+import com.in28minutes.springboot.rest.example.repo.StudentRepository;
+import com.in28minutes.springboot.rest.example.student.exception.StudentNotFoundException;
 
+@RestController
+public class StudentController
+{
 	@Autowired
 	private StudentRepository studentRepository;
 
@@ -36,7 +40,9 @@ public class StudentResource {
 		Optional<Student> student = studentRepository.findById(id);
 
 		if (!student.isPresent())
+		{
 			throw new StudentNotFoundException("id-" + id);
+		}
 
 		EntityModel<Student> resource = EntityModel.of(student.get());
 
@@ -62,17 +68,19 @@ public class StudentResource {
 		return ResponseEntity.created(location).build();
 
 	}
-	
+
 	@PutMapping("/students/{id}")
 	public ResponseEntity<Object> updateStudent(@RequestBody Student student, @PathVariable long id) {
 
 		Optional<Student> studentOptional = studentRepository.findById(id);
 
 		if (!studentOptional.isPresent())
+		{
 			return ResponseEntity.notFound().build();
+		}
 
 		student.setId(id);
-		
+
 		studentRepository.save(student);
 
 		return ResponseEntity.noContent().build();
